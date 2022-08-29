@@ -4,6 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node src/main.js",
+    "query:restaurants": "node test-queries/restaurants.query.js",
+    "query:orders": "node test-queries/orders.query.js",
+    "query:orders-info": "node test-queries/orders-complete-info.query.js",
+    "mutation:remove-restaurant": "node test-queries/remove-restaurant.mutation.js",
     "migrate": "knex migrate:latest",
     "rollback": "knex migrate:rollback",
     "seed": "knex seed:run"
