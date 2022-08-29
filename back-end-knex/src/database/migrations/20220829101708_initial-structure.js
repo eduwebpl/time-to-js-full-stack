@@ -24,7 +24,7 @@ export async function up(knex) {
 			  table.text('description')
 
 			  table.integer('restaurant_id').unsigned().notNullable()
-			  table.foreign('restaurant_id').references('restaurant.id').onDelete('CASCADE')
+			  table.foreign('restaurant_id').references('restaurants.id').onDelete('CASCADE')
 
 			  table.timestamps(false, true)
 		  })
@@ -36,7 +36,7 @@ export async function up(knex) {
 			  table.foreign('user_id').references('users.id').onDelete('CASCADE')
 
 			  table.integer('restaurant_id').unsigned().notNullable()
-			  table.foreign('restaurant_id').references('restaurant.id').onDelete('CASCADE')
+			  table.foreign('restaurant_id').references('restaurants.id').onDelete('CASCADE')
 
 			  table.timestamps(false, true)
 		  })

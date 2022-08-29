@@ -13,6 +13,12 @@ export default {
     },
     migrations: {
       directory: './src/database/migrations'
+    },
+    seeds: {
+      directory: './src/database/seeds'
+    } ,
+    pool: {
+      afterCreate: (knex, cb) => knex.run("PRAGMA foreign_keys = ON", cb)
     }
   },
 
