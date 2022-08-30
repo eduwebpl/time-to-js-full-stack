@@ -15,6 +15,8 @@ model User {
   email String  @unique
   password  String
 
+  orders Order[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -25,6 +27,9 @@ model Restaurant {
   address String
   type String?
 
+  products Product[]
+  orders Order[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -32,6 +37,15 @@ model Restaurant {
 model Order {
   id    Int     @id @default(autoincrement())
   date DateTime @default(now())
+
+  userId Int
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  restaurantId Int
+
+  delivery Delivery?
+  products OrderOfProducts[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -43,8 +57,27 @@ model Product {
   price Float
   description String?
 
+   restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+   restaurantId Int
+
+   orders OrderOfProducts[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model OrderOfProducts {
+   id    Int     @id @default(autoincrement())
+   price Float
+
+   order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+   orderId Int
+
+   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+   productId Int
+
+   assignedAt DateTime @default(now())
+   updatedAt DateTime @updatedAt
 }
 
 model Delivery {
@@ -52,6 +85,9 @@ model Delivery {
   deliveryDate DateTime?
   status String @default("IN_PROGRESS")
   address String
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId Int @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
