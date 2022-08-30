@@ -9,12 +9,9 @@
     "query:orders": "node test-queries/orders.query.js",
     "query:orders-info": "node test-queries/orders-complete-info.query.js",
     "mutation:remove-restaurant": "node test-queries/remove-restaurant.mutation.js",
-    "migrate": "knex migrate:latest",
-    "migrate:prod": "env-cmd knex migrate:latest --env production",
-    "rollback": "knex migrate:rollback",
-    "rollback:prod": "env-cmd knex migrate:rollback --env production",
-    "seed": "knex seed:run",
-    "seed:prod": "env-cmd knex seed:run --env production"
+    "migrate": "env-cmd knex migrate:latest",
+    "rollback": "env-cmd knex migrate:rollback",
+    "seed": "env-cmd knex seed:run"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +21,7 @@
     "env-cmd": "^10.1.0",
     "knex": "^2.2.0",
     "mysql": "^2.18.1",
+    "objection": "^3.0.1",
     "sqlite3": "^5.0.11"
   },
   "type": "module"
