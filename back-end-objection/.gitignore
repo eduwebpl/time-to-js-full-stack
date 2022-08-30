@@ -1,0 +1,4 @@
+*.sqlite3
+# This below should be uncommented:
+# .env
+
