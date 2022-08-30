@@ -22,35 +22,16 @@ export default {
     }
   },
 
-  staging: {
-    client: 'postgresql',
-    connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
-    },
-    pool: {
-      min: 2,
-      max: 10
-    },
-    migrations: {
-      tableName: 'knex_migrations'
-    }
-  },
-
   production: {
-    client: 'postgresql',
-    connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
-    },
-    pool: {
-      min: 2,
-      max: 10
-    },
+    client: 'mysql',
+    connection: process.env.MYSQL_DB_CONNECTION_URL,
     migrations: {
-      tableName: 'knex_migrations'
+      directory: './src/database/migrations'
+    },
+    // Only for MySQL "showcase" !!!
+    // Do not really include production seed in real project
+    seeds: {
+      directory: './src/database/seeds'
     }
   }
 

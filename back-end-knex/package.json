@@ -10,15 +10,20 @@
     "query:orders-info": "node test-queries/orders-complete-info.query.js",
     "mutation:remove-restaurant": "node test-queries/remove-restaurant.mutation.js",
     "migrate": "knex migrate:latest",
+    "migrate:prod": "env-cmd knex migrate:latest --env production",
     "rollback": "knex migrate:rollback",
-    "seed": "knex seed:run"
+    "rollback:prod": "env-cmd knex migrate:rollback --env production",
+    "seed": "knex seed:run",
+    "seed:prod": "env-cmd knex seed:run --env production"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "env-cmd": "^10.1.0",
     "knex": "^2.2.0",
+    "mysql": "^2.18.1",
     "sqlite3": "^5.0.11"
   },
   "type": "module"
