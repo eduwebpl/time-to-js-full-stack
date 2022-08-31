@@ -11,39 +11,66 @@ function parseURL(req) {
   req.identifier = identifier
 }
 
-const server = http.createServer((req, res) => {
-  let status = 200
-  let body = {}
-
-  parseURL(req)
-
-  const { method, resource, identifier, query, url } = req
-  try {
-    switch (method) {
-      case 'GET':
-        switch (resource) {
-          case 'restaurants':
-            if (identifier) {
-              body = { id: identifier, name: 'Restaurant...' }
-            } else {
-              body = [{ id: 1, name: 'Restaurant...', query }]
-            }
-            break
-          default:
-            status = 404
-            body = { message: `URL: ${url} not found` }
+// middleware
+function parseBodyAsJSON(req) {
+  const { headers } = req
+  return new Promise((resolve, reject) => {
+    let body = Buffer.alloc(0)
+    req.on('error', reject)
+    req.on('data', (chunk) => {
+      body = Buffer.concat([body, chunk])
+    })
+    req.on('end', () => {
+      if (body.length && headers['content-type'] === 'application/json') {
+        try {
+          req.body = JSON.parse(body)
+        } catch (e) {
+          reject(e)
         }
-        break
-      default:
-        status = 404
-        body = { message: `method: ${method} not available` }
+      }
+      resolve()
+    })
+  })
+}
+
+const resolver = {
+  'GET:': () => ({ hello: 'World' }),
+  'GET:restaurants': (req) => {
+    const { identifier, query } = req
+    if (identifier) {
+      return { id: identifier, name: 'Restaurant...' }
+    } else {
+      return [{ id: 1, name: 'Restaurant...', query }]
     }
-  } catch ({ message }) {
-    status = 500
-    body = { message }
-  } finally {
-    res.writeHead(status, { 'Content-Type': 'application/json' })
+  },
+  'POST:restaurants': (req) => {
+    return { myBodyIs: req.body }
+  },
+}
+
+async function handleRequest(req, res) {
+  const { method, resource, url } = req
+  const action = resolver[`${method}:${resource}`]
+  if (action) {
+    res.statusCode = 200
+    return action(req, res)
+  } else {
+    res.statusCode = 404
+    return { message: `URL: /${url} for method: ${method} not found` }
+  }
+}
+
+const server = http.createServer(async (req, res) => {
+  parseURL(req)
+  try {
+    await parseBodyAsJSON(req)
+    const body = await handleRequest(req, res)
+    res.setHeader('Content-Type', 'application/json')
     res.write(JSON.stringify(body))
+    res.end()
+  } catch ({ message }) {
+    res.statusCode = 500
+    res.write(JSON.stringify({ message }))
     res.end()
   }
 })

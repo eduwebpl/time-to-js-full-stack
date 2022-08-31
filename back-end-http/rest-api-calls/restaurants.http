@@ -1,3 +1,6 @@
+### Read
+GET http://localhost:4100/
+
 ### Create Restaurant
 POST http://localhost:4100/restaurants
 Content-Type: application/json
