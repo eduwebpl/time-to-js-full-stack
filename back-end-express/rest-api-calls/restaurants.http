@@ -1,0 +1,32 @@
+### [C]reate Restaurant
+POST http://localhost:4100/restaurants
+Content-Type: application/json
+
+{
+  "name": "Sample restaurant",
+  "address": "Sample Street 42nd"
+}
+
+### [R]ead Restaurants
+GET http://localhost:4100/restaurants
+
+### Read Restaurants
+GET http://localhost:4100/restaurants?page=1&count=10
+
+### Read Restaurant with id: 1
+GET http://localhost:4100/restaurants/122
+
+
+### [U]pdate Restaurant PATCH
+PATCH http://localhost:4100/restaurants/1
+Authorization: Bearer sample-t0k3n
+Content-Type: application/json
+
+{
+  "name": "Hod Dog Hut"
+}
+
+### [D]elete Restaurant
+DELETE http://localhost:4100/restaurants/1
+Authorization: Bearer sample-t0k3n
+Content-Type: application/json

@@ -1,0 +1,7 @@
+POST http://localhost:4100/user/sing-in
+Content-Type: application/json
+
+{
+  "email": "sample@mail.com",
+  "password": "why-no-SSL?"
+}

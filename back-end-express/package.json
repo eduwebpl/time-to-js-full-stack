@@ -1,0 +1,24 @@
+{
+  "name": "back-end-express",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "env-cmd nodemon ./src/server.js",
+    "start:prod": "env-cmd node ./src/server.js",
+    "lint": "eslint src --fix",
+    "pretty": "prettier src --write",
+    "lint-and-pretty": "npm run lint && npm run pretty"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "env-cmd": "^10.1.0",
+    "eslint": "8.22.0",
+    "eslint-config-prettier": "^8.5.0",
+    "nodemon": "^2.0.19",
+    "prettier": "^2.7.1"
+  },
+  "type": "module"
+}
