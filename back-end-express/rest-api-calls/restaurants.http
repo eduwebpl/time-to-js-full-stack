@@ -1,5 +1,6 @@
 ### [C]reate Restaurant
 POST http://localhost:4100/restaurants
+Authorization: Bearer sample-t0k3n
 Content-Type: application/json
 
 {
