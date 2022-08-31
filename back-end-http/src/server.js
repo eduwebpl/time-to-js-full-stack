@@ -2,19 +2,48 @@ import http from 'http'
 
 const { PORT = 3000 } = process.env
 
-const server = http.createServer((req, res) => {
-  console.log(req.url)
-  console.log(req.method)
-  console.log(req.headers)
+// middleware
+function parseURL(req) {
+  const myURL = new URL(req.url, `http://${req.headers.host}`)
+  const [, resource, identifier] = myURL.pathname.split('/')
+  req.query = Object.fromEntries(myURL.searchParams.entries())
+  req.resource = resource
+  req.identifier = identifier
+}
 
+const server = http.createServer((req, res) => {
+  let status = 200
+  let body = {}
+
+  parseURL(req)
+
+  const { method, resource, identifier, query, url } = req
   try {
-    JSON.parse('{"hello":WORLD}')
-    res.writeHead(200, { 'Content-Type': 'application/json' })
-    res.write(JSON.stringify({ hello: 'World' }))
-    res.end()
+    switch (method) {
+      case 'GET':
+        switch (resource) {
+          case 'restaurants':
+            if (identifier) {
+              body = { id: identifier, name: 'Restaurant...' }
+            } else {
+              body = [{ id: 1, name: 'Restaurant...', query }]
+            }
+            break
+          default:
+            status = 404
+            body = { message: `URL: ${url} not found` }
+        }
+        break
+      default:
+        status = 404
+        body = { message: `method: ${method} not available` }
+    }
   } catch ({ message }) {
-    res.writeHead(500, { 'Content-Type': 'application/json' })
-    res.write(JSON.stringify({ message }))
+    status = 500
+    body = { message }
+  } finally {
+    res.writeHead(status, { 'Content-Type': 'application/json' })
+    res.write(JSON.stringify(body))
     res.end()
   }
 })
