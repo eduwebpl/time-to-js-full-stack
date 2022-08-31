@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "env-cmd nodemon ./src/server.js",
-    "start:prod": "env-cmd node ./src/sever.js"
+    "start:prod": "env-cmd node ./src/sever.js",
+    "lint": "eslint src --fix",
+    "pretty": "prettier src --write",
+    "lint-and-pretty": "npm run lint && npm run pretty"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +16,9 @@
   "type": "module",
   "devDependencies": {
     "env-cmd": "^10.1.0",
-    "nodemon": "^2.0.19"
+    "eslint": "8.22.0",
+    "eslint-config-prettier": "^8.5.0",
+    "nodemon": "^2.0.19",
+    "prettier": "^2.7.1"
   }
 }
