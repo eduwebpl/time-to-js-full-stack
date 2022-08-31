@@ -24,7 +24,7 @@ model User {
 model Restaurant {
   id    Int     @id @default(autoincrement())
   name String
-  address String
+  address String //@db.Text
   type String?
 
   products Product[]
@@ -55,7 +55,7 @@ model Product {
   id    Int     @id @default(autoincrement())
   name String
   price Float
-  description String?
+  description String? //@db.Text
 
    restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
    restaurantId Int
@@ -84,7 +84,7 @@ model Delivery {
   id    Int     @id @default(autoincrement())
   deliveryDate DateTime?
   status String @default("IN_PROGRESS")
-  address String
+  address String //@db.Text
 
   order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId Int @unique
@@ -95,4 +95,6 @@ model Delivery {
 
 //enum DeliveryStatus {
 //    IN_PROGRESS
+//    DELIVERED
+//    CANCELED
 //}

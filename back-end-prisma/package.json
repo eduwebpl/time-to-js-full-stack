@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "migrate": "prisma migrate dev",
+    "migrate:production": "prisma migrate deploy",
     "seed": "prisma db seed",
     "query:orders": "node test-queries/orders.query.js",
     "query:orders-info": "node test-queries/orders-complete-info.query.js",
