@@ -8,7 +8,9 @@
     "start:prod": "env-cmd node ./src/sever.js",
     "lint": "eslint src --fix",
     "pretty": "prettier src --write",
-    "lint-and-pretty": "npm run lint && npm run pretty"
+    "lint-and-pretty": "npm run lint && npm run pretty",
+    "migrate": "prisma migrate dev",
+    "seed": "prisma db seed"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +21,14 @@
     "eslint": "8.22.0",
     "eslint-config-prettier": "^8.5.0",
     "nodemon": "^2.0.19",
-    "prettier": "^2.7.1"
+    "prettier": "^2.7.1",
+    "prisma": "^4.3.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.3.0",
+    "bcryptjs": "^2.4.3"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   }
 }
