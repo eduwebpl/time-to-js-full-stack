@@ -1,0 +1,18 @@
+{
+  "name": "back-end-http",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "env-cmd nodemon ./src/server.js",
+    "start:prod": "env-cmd node ./src/sever.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "env-cmd": "^10.1.0",
+    "nodemon": "^2.0.19"
+  }
+}
