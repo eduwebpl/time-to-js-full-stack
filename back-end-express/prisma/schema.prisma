@@ -5,6 +5,10 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator jsonSchema {
+  provider = "prisma-json-schema-generator"
+}
+
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")

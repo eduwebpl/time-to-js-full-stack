@@ -1,17 +1,27 @@
 import { Router } from 'express'
 import { authMiddleware } from '../middleware/auth.middleware.js'
 import { PrismaClient } from '@prisma/client'
+import { validationMiddleware } from '../middleware/validation.middleware.js'
+import {
+  createRestaurantDtoSchema,
+  updateRestaurantDtoSchema,
+} from './restaurant-dto.schema.js'
 
 const prisma = new PrismaClient()
 
 export const restaurantsController = new Router()
 
-restaurantsController.post('', authMiddleware, async (req, res) => {
-  const { body } = req
-  const result = await prisma.restaurant.create({ data: body })
+restaurantsController.post(
+  '',
+  authMiddleware,
+  validationMiddleware({ body: createRestaurantDtoSchema }),
+  async (req, res) => {
+    const { body } = req
+    const result = await prisma.restaurant.create({ data: body })
 
-  res.status(201).json(result)
-})
+    res.status(201).json(result)
+  }
+)
 
 restaurantsController.get('', async (req, res) => {
   const { page = '1', count = '50' } = req.query
@@ -32,6 +42,23 @@ restaurantsController.get('/:restaurantId', async (req, res) => {
   })
   res.json(restaurant)
 })
+
+restaurantsController.patch(
+  '/:restaurantId',
+  authMiddleware,
+  validationMiddleware({ body: updateRestaurantDtoSchema }),
+  async (req, res) => {
+    const { restaurantId } = req.params
+    const { body } = req
+    const restaurant = await prisma.restaurant.update({
+      where: {
+        id: Number(restaurantId),
+      },
+      data: body,
+    })
+    res.json(restaurant)
+  }
+)
 
 restaurantsController.post(
   '/:restaurantId/products',

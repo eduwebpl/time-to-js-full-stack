@@ -5,7 +5,8 @@ Content-Type: application/json
 
 {
   "name": "Boom Rest",
-  "address": "Sample Street 42nd"
+  "address": "Sample Street 42nd",
+  "type": "Italian"
 }
 
 ### [R]ead Restaurants
@@ -16,6 +17,15 @@ GET http://localhost:4100/restaurants?page=2&count=2
 
 ### Read Restaurant with id: 1
 GET http://localhost:4100/restaurants/6
+
+### Update restaurant:
+PATCH http://localhost:4100/restaurants/6
+Authorization: Bearer sample-t0k3n
+Content-Type: application/json
+
+{
+  "name": "Fa"
+}
 
 ### Create new product
 POST http://localhost:4100/restaurants/1/products
