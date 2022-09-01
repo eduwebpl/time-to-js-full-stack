@@ -4,7 +4,7 @@ Authorization: Bearer sample-t0k3n
 Content-Type: application/json
 
 {
-  "name": "Sample restaurant",
+  "name": "Boom Rest",
   "address": "Sample Street 42nd"
 }
 
@@ -12,14 +12,14 @@ Content-Type: application/json
 GET http://localhost:4100/restaurants
 
 ### Read Restaurants
-GET http://localhost:4100/restaurants?page=1&count=10
+GET http://localhost:4100/restaurants?page=2&count=2
 
 ### Read Restaurant with id: 1
-GET http://localhost:4100/restaurants/122
+GET http://localhost:4100/restaurants/6
 
 ### Create new product
 POST http://localhost:4100/restaurants/1/products
-#Authorization: Bearer sample-t0k3n
+Authorization: Bearer sample-t0k3n
 Content-Type: application/json
 
 {
