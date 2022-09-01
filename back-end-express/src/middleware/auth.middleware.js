@@ -7,5 +7,7 @@ export function authMiddleware(req, res, next) {
     req.user = { id: 1, name: 'Mike' }
     return next()
   }
-  next(new Error('Not authorized!'))
+  const error = new Error('Not authorized!');
+  error.status = 403
+  next(error)
 }

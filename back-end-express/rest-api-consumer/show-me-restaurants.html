@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Show Restaurants</title>
+</head>
+<body>
+    <script>
+        //Like Single Page App (SPA)
+        const $ul = document.createElement('ul');
+        function makeLiElement(name) {
+            const $li = document.createElement('li');
+            $li.textContent = name;
+            return $li
+        }
+
+        fetch('http://localhost:4100/restaurants')
+          .then(res => res.json())
+          .then(data => {
+			 data.forEach(restaurant => {
+				 $ul.appendChild(makeLiElement(restaurant.name))
+             })
+          })
+
+        document.body.append($ul)
+    </script>
+</body>
+</html>
