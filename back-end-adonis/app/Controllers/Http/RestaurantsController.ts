@@ -1,4 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { updateRestaurantDtoSchema } from 'App/DTOs/restaurant-dto.schema'
+import RestaurantValidator from 'App/Validators/RestaurantValidator'
 
 export default class RestaurantsController {
   public async index({ request }: HttpContextContract) {
@@ -6,7 +8,9 @@ export default class RestaurantsController {
   }
 
   public async store({ request }: HttpContextContract) {
-    return { id: 100, body: request.body() }
+    const payload = await request.validate(RestaurantValidator)
+
+    return { id: 100, payload }
   }
 
   public async show({ params }: HttpContextContract) {
@@ -14,7 +18,9 @@ export default class RestaurantsController {
   }
 
   public async update({ request }: HttpContextContract) {
-    return { body: request.body() }
+    await request.validateAjv(updateRestaurantDtoSchema)
+
+    return { payload: request.body() }
   }
 
   public async destroy({ params }: HttpContextContract) {
