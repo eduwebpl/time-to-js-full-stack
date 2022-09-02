@@ -1,0 +1,61 @@
+### [C]reate Restaurant
+POST http://localhost:4100/restaurants
+Authorization: Bearer sample-t0k3n
+Content-Type: application/json
+
+{
+  "name": "Boom Rest",
+  "address": "Sample Street 42nd",
+  "type": "Italian"
+}
+
+### [R]ead Restaurants
+GET http://localhost:4100/restaurants
+
+### Read Restaurants
+GET http://localhost:4100/restaurants?page=2&count=2
+
+### Read Restaurant with id: 1
+GET http://localhost:4100/restaurants/6
+
+### Update restaurant:
+PATCH http://localhost:4100/restaurants/6
+Authorization: Bearer sample-t0k3n
+Content-Type: application/json
+
+{
+  "name": "Fa"
+}
+
+### Create new product
+POST http://localhost:4100/restaurants/1/products
+Authorization: Bearer sample-t0k3n
+Content-Type: application/json
+
+{
+  "name": "My super product",
+  "price": 234
+}
+
+### Update product
+PATCH http://localhost:4100/restaurants/2/products/3
+Authorization: Bearer sample-t0k3n
+Content-Type: application/json
+
+{
+  "price": 332
+}
+
+### [U]pdate Restaurant PATCH
+PATCH http://localhost:4100/restaurants/1
+Authorization: Bearer sample-t0k3n
+Content-Type: application/json
+
+{
+  "name": "Hod Dog Hut"
+}
+
+### [D]elete Restaurant
+DELETE http://localhost:4100/restaurants/13
+Authorization: Bearer sample-t0k3n
+Content-Type: application/json

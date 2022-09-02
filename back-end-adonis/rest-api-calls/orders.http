@@ -1,0 +1,18 @@
+GET http://localhost:4100/orders
+Authorization: Bearer sample-t0k3n
+
+### GET ONE ORDER
+
+GET http://localhost:4100/orders/10
+Authorization: Bearer sample-t0k3n
+
+### PLACE NEW ORDER
+POST http://localhost:4100/orders
+Authorization: Bearer sample-t0k3n
+Content-Type: application/json
+
+{
+  "restaurantId": 2,
+  "productsIds": [5],
+  "address": "My HOME 455"
+}

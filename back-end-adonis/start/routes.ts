@@ -23,3 +23,22 @@ import Route from '@ioc:Adonis/Core/Route'
 Route.get('/', async () => {
   return { hello: 'world !!' }
 })
+
+Route.resource('/restaurants', 'RestaurantsController')
+  .apiOnly()
+  .paramFor('restaurants', 'restaurantId')
+  .where('restaurantId', Route.matchers.number())
+
+Route.resource('restaurants.products', 'ProductsController')
+  .only(['store', 'update', 'destroy'])
+  .paramFor('restaurants', 'restaurantId')
+  .paramFor('products', 'productId')
+  .where('restaurantId', Route.matchers.number())
+  .where('productId', Route.matchers.number())
+
+Route.resource('/orders', 'OrdersController')
+  .only(['index', 'store', 'show'])
+  .paramFor('orders', 'orderId')
+  .where('orderId', Route.matchers.number())
+
+Route.post('/users/sign-in', 'UsersController.signIn')
