@@ -1,10 +1,12 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import restaurantService from '@ioc:Services/RestaurantService'
 import { updateRestaurantDtoSchema } from 'App/DTOs/restaurant-dto.schema'
 import RestaurantValidator from 'App/Validators/RestaurantValidator'
+import { Restaurant } from '@prisma/client'
 
 export default class RestaurantsController {
-  public async index({ request }: HttpContextContract) {
-    return [{ query: request.qs() }]
+  public async index({}: HttpContextContract): Promise<Restaurant[]> {
+    return restaurantService.getAllRestaurants()
   }
 
   public async store({ request }: HttpContextContract) {

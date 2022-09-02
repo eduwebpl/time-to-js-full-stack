@@ -19,7 +19,9 @@
   "providers": [
     "./providers/AppProvider",
     "@adonisjs/core",
-    "./providers/AjvValidatorProvider"
+    "./providers/AjvValidatorProvider",
+    "./providers/PrismaProvider",
+    "./providers/ServiceProvider"
   ],
   "aceProviders": [
     "@adonisjs/repl"
