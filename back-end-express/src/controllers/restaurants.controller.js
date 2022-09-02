@@ -5,7 +5,7 @@ import { validationMiddleware } from '../middleware/validation.middleware.js'
 import {
   createRestaurantDtoSchema,
   updateRestaurantDtoSchema,
-} from './restaurant-dto.schema.js'
+} from '../dto-schema/restaurant-dto.schema.js'
 
 const prisma = new PrismaClient()
 
