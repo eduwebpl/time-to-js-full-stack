@@ -13,3 +13,11 @@ declare module '@ioc:Services/RestaurantService' {
 
   export default restaurantService
 }
+
+declare module '@ioc:Services/AuthService' {
+  import { AuthService } from 'App/Services/AuthService'
+
+  const authService: AuthService
+
+  export default authService
+}

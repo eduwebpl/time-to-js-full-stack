@@ -1,4 +1,5 @@
 import type { ApplicationContract } from '@ioc:Adonis/Core/Application'
+import { importPKCS8 } from 'jose'
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,7 @@ export default class ServiceProvider {
 
   public async boot() {
     // All bindings are ready, feel free to use them
+    const key = await importPKCS8(this.app.env.get('PRIVATE_KEY'), 'ES256')
     this.app.container.singleton('Services/OrderService', () => {
       const { OrderService } = require('App/Services/OrderService')
       return new OrderService()
@@ -35,6 +37,10 @@ export default class ServiceProvider {
     this.app.container.singleton('Services/RestaurantService', () => {
       const { RestaurantService } = require('App/Services/RestaurantService')
       return new RestaurantService()
+    })
+    this.app.container.singleton('Services/AuthService', () => {
+      const { AuthService } = require('App/Services/AuthService')
+      return new AuthService(key)
     })
   }
 

@@ -52,4 +52,8 @@ export class OrderService {
       },
     })
   }
+
+  public async getOrderForUser(userId: number, orderId: number) {
+    return prisma.order.findFirstOrThrow({ where: { userId, id: orderId } })
+  }
 }

@@ -37,6 +37,9 @@ Route.resource('restaurants.products', 'ProductsController')
   .where('productId', Route.matchers.number())
 
 Route.resource('/orders', 'OrdersController')
+  .middleware({
+    '*': 'auth',
+  })
   .only(['index', 'store', 'show'])
   .paramFor('orders', 'orderId')
   .where('orderId', Route.matchers.number())

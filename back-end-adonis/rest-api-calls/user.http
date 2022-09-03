@@ -5,3 +5,13 @@ Content-Type: application/json
   "email": "sample@mail.com",
   "password": "why-no-SSL?"
 }
+
+### The right sign-in
+
+POST http://localhost:4100/users/sign-in
+Content-Type: application/json
+
+{
+  "email": "admin@fooddelivery.com",
+  "password": "s4mpl3Pa55word"
+}

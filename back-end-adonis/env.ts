@@ -22,4 +22,5 @@ export default Env.rules({
   DRIVE_DISK: Env.schema.enum(['local'] as const),
   NODE_ENV: Env.schema.enum(['development', 'production', 'test'] as const),
   DATABASE_URL: Env.schema.string(),
+  PRIVATE_KEY: Env.schema.string(),
 })

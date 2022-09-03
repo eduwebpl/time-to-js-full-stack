@@ -1,10 +1,10 @@
 GET http://localhost:4100/orders
-Authorization: Bearer sample-t0k3n
+Authorization: Bearer eyJhbGciOiJFUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyMjM1NDUyLCJleHAiOjE2NjIyMzU1MTJ9.YnyLnReTsjg6aOdbepeWUgE1Qk4Elr1ly9sSLOmUcjru8Ox6ukWOqc-UO2IFiCssuwlmAMIO6PLO-YmZ7cAA4w
 
 ### GET ONE ORDER
 
-GET http://localhost:4100/orders/10
-Authorization: Bearer sample-t0k3n
+GET http://localhost:4100/orders/1
+Authorization: Bearer eyJhbGciOiJFUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyMjM1NjQ5LCJleHAiOjE2NjIyMzU5NDl9.FlGskvD1ErBR8g81ZJW2Eq8X2YAvkYeBR4YQ6i3MVD27FATBPf91o2wSVeVxsyZePlEWkAV0NP3MLB2YfnsuGQ
 
 ### PLACE NEW ORDER
 POST http://localhost:4100/orders

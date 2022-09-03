@@ -54,7 +54,6 @@ await prisma.restaurant.create({
   },
 })
 
-
 await prisma.restaurant.create({
   data: {
     id: 2,
