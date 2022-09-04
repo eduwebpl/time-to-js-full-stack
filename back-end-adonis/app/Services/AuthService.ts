@@ -1,5 +1,6 @@
 import { HttpException } from '@adonisjs/http-server/build/src/Exceptions/HttpException'
 import prisma from '@ioc:Orm/Prisma'
+import Env from '@ioc:Adonis/Core/Env'
 import { User } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import { KeyLike, SignJWT, jwtVerify } from 'jose'
@@ -29,7 +30,7 @@ export class AuthService {
     return new SignJWT({ id: user.id })
       .setProtectedHeader({ alg: 'ES256' })
       .setIssuedAt()
-      .setExpirationTime('5m')
+      .setExpirationTime(Env.get('NODE_ENV') === 'development' ? '2d' : '1h')
       .sign(this.signKey)
   }
 }
