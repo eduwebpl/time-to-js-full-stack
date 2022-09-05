@@ -16,7 +16,8 @@ export default class RestaurantsController {
   }
 
   public async show({ params }: HttpContextContract) {
-    return params
+    const { restaurantId } = params
+    return restaurantService.getOneRestaurant(restaurantId)
   }
 
   public async update({ request }: HttpContextContract) {

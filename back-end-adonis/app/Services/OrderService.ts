@@ -54,6 +54,13 @@ export class OrderService {
   }
 
   public async getOrderForUser(userId: number, orderId: number) {
-    return prisma.order.findFirstOrThrow({ where: { userId, id: orderId } })
+    return prisma.order.findFirstOrThrow({
+      where: { userId, id: orderId },
+      include: {
+        restaurant: true,
+        products: true,
+        delivery: true,
+      },
+    })
   }
 }

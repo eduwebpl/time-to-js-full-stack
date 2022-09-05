@@ -5,4 +5,13 @@ export class RestaurantService {
   public async getAllRestaurants(): Promise<Restaurant[]> {
     return prisma.restaurant.findMany({})
   }
+
+  public async getOneRestaurant(restaurantId: number) {
+    return prisma.restaurant.findFirstOrThrow({
+      where: { id: restaurantId },
+      include: {
+        products: true,
+      },
+    })
+  }
 }
