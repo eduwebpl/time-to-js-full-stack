@@ -1,0 +1,5 @@
+### [R]ead Restaurants
+GET http://localhost:4100/restaurants
+
+### [R]ead One Restaurant
+GET http://localhost:4100/restaurants/1

@@ -1,0 +1,21 @@
+### [R]ead Orders  (WRONG)
+GET http://localhost:4100/orders
+
+### [R]ead Orders
+GET http://localhost:4100/orders
+Authorization: Bearer eyJhbGciOiJFUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyMjM4MTI0LCJleHAiOjE2NjI0MTA5MjR9.saWNuv4j3WiptnDMA-VuJ8829Jox0oCLAPzOsk-MGCbt0FW7deN84TXbf1rpOHBsmPW2VoJ1cWBw1tcTLXAFwQ
+
+### [R]ead One Order
+GET http://localhost:4100/orders/1
+Authorization: Bearer eyJhbGciOiJFUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyMjM4MTI0LCJleHAiOjE2NjI0MTA5MjR9.saWNuv4j3WiptnDMA-VuJ8829Jox0oCLAPzOsk-MGCbt0FW7deN84TXbf1rpOHBsmPW2VoJ1cWBw1tcTLXAFwQ
+
+### [C]reate new order
+POST http://localhost:4100/orders
+Authorization: Bearer eyJhbGciOiJFUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjYyMjM4MTI0LCJleHAiOjE2NjI0MTA5MjR9.saWNuv4j3WiptnDMA-VuJ8829Jox0oCLAPzOsk-MGCbt0FW7deN84TXbf1rpOHBsmPW2VoJ1cWBw1tcTLXAFwQ
+Content-Type: application/json
+
+{
+  "restaurantId": 1,
+  "productsIds": [55],
+  "address": "Some place"
+}
