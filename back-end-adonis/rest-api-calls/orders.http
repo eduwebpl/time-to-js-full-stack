@@ -16,3 +16,6 @@ Content-Type: application/json
   "productsIds": [5],
   "address": "My HOME 455"
 }
+
+### Unauthorized order
+POST http://localhost:4100/orders
