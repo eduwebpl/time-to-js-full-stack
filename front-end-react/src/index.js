@@ -5,6 +5,7 @@ import 'bulma/css/bulma.css';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
+import { AuthContextProvider } from './context/AuthContext';
 import reportWebVitals from './reportWebVitals';
 
 const queryClient = new QueryClient();
@@ -13,7 +14,9 @@ root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <App />
+        <AuthContextProvider>
+          <App />
+        </AuthContextProvider>
       </BrowserRouter>
     </QueryClientProvider>
   </React.StrictMode>

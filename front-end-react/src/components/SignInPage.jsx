@@ -1,17 +1,16 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { authResource } from "../resources/auth.resource";
+import { AuthContext } from "../context/AuthContext";
 import { Notification } from "./Notification";
 
 export function SignInPage() {
+  const { signIn, isSigningIn, signInError } = useContext(AuthContext);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { mutate, isLoading, error } = useMutation(({ email, password }) =>
-    authResource.signIn(email, password)
-  );
+
   const isValid = Boolean(email && password);
 
   const handleSubmit = (ev) => {
@@ -19,7 +18,7 @@ export function SignInPage() {
     if (!isValid) {
       return;
     }
-    mutate(
+    signIn(
       { email, password },
       {
         onSuccess: () => navigate("/"),
@@ -63,13 +62,15 @@ export function SignInPage() {
             <button
               className="button is-link"
               type="submit"
-              disabled={isLoading}
+              disabled={isSigningIn}
             >
               Sign in
             </button>
           </div>
         </div>
-        {error && <Notification message={error.message} type="danger" />}
+        {signInError && (
+          <Notification message={signInError.message} type="danger" />
+        )}
       </form>
     </section>
   );
