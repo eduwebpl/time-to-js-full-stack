@@ -1,44 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { NavLink } from 'react-router-dom';
+import { ordersResource } from '../resources/orders.resource';
 import { restaurantsResource } from '../resources/restaurants.resource';
 import { Notification } from './Notification';
 
 export function MainMenu() {
 
     // let restaurants = [];
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState()
-    const [restaurants, setRestaurants] = useState([])
+    const {isLoading, error, isError, data: restaurants} = useQuery(['restaurants'], restaurantsResource.getAll)
 
-    const orders = [
-        {id: 1, date: '02/09'},
-        {id: 2, date: '31/08'}
-    ];
+    const {isLoading: isOrdersLoading, error: ordersError, data: orders} = useQuery(['orders'], ordersResource.getAll)
 
-    useEffect(() => {
 
-      restaurantsResource.getAll()
-        .then((data) => {
-          // console.log(data)
-          setRestaurants(data)
-        }).catch(err => {
-          setError(err)
-        }).finally(() => {
-          setLoading(false)
-        })
-    }, [])
 
 	return <aside><p className="menu-label">Restaurants</p>
       <ul className="menu-list">
           {
-            loading &&
+            isLoading &&
             <Notification message="Loading..." />
           }
           {
-            error &&
+            isError &&
             <Notification type="danger" message={error.message} />
           }
           {
+            restaurants &&
               restaurants.map(restaurant => <li key={restaurant.id}>
                   <NavLink to={`/restaurant/${restaurant.id}`}>{restaurant.name}</NavLink>
               </li>)
@@ -46,7 +32,16 @@ export function MainMenu() {
       </ul>
       <p className="menu-label">Orders</p>
       <ul className="menu-list">
+        {
+          isOrdersLoading &&
+          <Notification message="Loading..." />
+        }
+        {
+          ordersError &&
+          <Notification type="danger" message={ordersError.message} />
+        }
           {
+            orders &&
               orders.map(order => <li key={order.id}>
                 <NavLink to={`/order/${order.id}`}>{order.date}</NavLink>
               </li>)
