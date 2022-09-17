@@ -1,5 +1,5 @@
 export function Notification({message = '', type = 'info'}) {
-	return <li className={`notification is-${type}`}>
+	return <div className={`notification is-${type}`}>
       {message}
-  </li>;
+  </div>;
 }
