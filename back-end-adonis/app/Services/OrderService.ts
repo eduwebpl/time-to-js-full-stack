@@ -58,7 +58,9 @@ export class OrderService {
       where: { userId, id: orderId },
       include: {
         restaurant: true,
-        products: true,
+        products: {
+          include: { product: true },
+        },
         delivery: true,
       },
     })
