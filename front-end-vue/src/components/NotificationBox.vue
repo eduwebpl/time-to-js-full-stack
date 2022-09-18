@@ -15,5 +15,4 @@ defineProps({
   <div :class="['notification', `is-${type}`]">
     {{ message }}
   </div>
-  ;
 </template>
