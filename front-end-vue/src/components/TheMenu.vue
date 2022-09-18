@@ -1,5 +1,6 @@
 <script setup>
 import NotificationBox from "@/components/NotificationBox.vue";
+import { formatDate } from "@/date.helper";
 import { useOrdersQuery } from "@/queries/useOrdersQuery";
 import { restaurantsResource } from "@/resources/restaurants.resource";
 import { useQuery } from "vue-query";
@@ -44,7 +45,7 @@ const { isOrdersLoading, ordersError, orders } = useOrdersQuery();
       </li>
       <li v-for="order of orders" :key="order.id">
         <RouterLink activeClass="is-active" :to="`/orders/${order.id}`">
-          {{ order.date }}
+          {{ formatDate(order.date) }}
         </RouterLink>
       </li>
     </ul>
