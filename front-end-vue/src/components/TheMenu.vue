@@ -1,33 +1,51 @@
 <script setup>
+import NotificationBox from "@/components/NotificationBox.vue";
+import { useOrdersQuery } from "@/queries/useOrdersQuery";
+import { restaurantsResource } from "@/resources/restaurants.resource";
+import { useQuery } from "vue-query";
 import { RouterLink } from "vue-router";
+
+const {
+  isLoading,
+  error,
+  isError,
+  data: restaurants,
+} = useQuery(["restaurants"], restaurantsResource.getAll);
+
+const { isOrdersLoading, ordersError, orders } = useOrdersQuery();
 </script>
 
 <template>
   <aside>
     <p class="menu-label">Restaurants</p>
     <ul class="menu-list">
-      <li>
-        <RouterLink activeClass="is-active" class="" to="/restaurants/1"
-          >Sea food restaurant</RouterLink
-        >
+      <li v-if="isLoading">
+        <NotificationBox message="Loading..." />
       </li>
-      <li>
-        <RouterLink activeClass="is-active" class="" to="/restaurants/2"
-          >Sooo Fast</RouterLink
+      <li v-if="isError">
+        <NotificationBox :message="error.message" type="danger" />
+      </li>
+      <li v-for="restaurant of restaurants" :key="restaurant.id">
+        <RouterLink
+          activeClass="is-active"
+          :to="`/restaurants/${restaurant.id}`"
         >
+          {{ restaurant.name }}
+        </RouterLink>
       </li>
     </ul>
     <p class="menu-label">Orders</p>
     <ul class="menu-list">
-      <li>
-        <RouterLink activeClass="is-active" class="" to="/orders/1"
-          >28/08 08:22:26</RouterLink
-        >
+      <li v-if="isOrdersLoading">
+        <NotificationBox message="Loading orders..." />
       </li>
-      <li>
-        <RouterLink activeClass="is-active" class="" to="/orders/2"
-          >01/09 12:58:34</RouterLink
-        >
+      <li v-if="ordersError">
+        <NotificationBox :message="ordersError.message" type="danger" />
+      </li>
+      <li v-for="order of orders" :key="order.id">
+        <RouterLink activeClass="is-active" :to="`/orders/${order.id}`">
+          {{ order.date }}
+        </RouterLink>
       </li>
     </ul>
   </aside>
