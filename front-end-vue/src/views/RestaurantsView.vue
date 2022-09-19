@@ -1,12 +1,26 @@
 <script setup>
 import NotificationBox from "@/components/NotificationBox.vue";
-import { ref, watch } from "vue";
+import { invalidateOrders } from "@/queries/useOrdersQuery";
+import { ordersResource } from "@/resources/orders.resource";
+import { useAuthStore } from "@/stores/auth";
+import { watch, ref, computed } from "vue";
 import { useRoute } from "vue-router";
 import { restaurantsResource } from "@/resources/restaurants.resource";
-import { useQuery } from "vue-query";
+import { useMutation, useQuery } from "vue-query";
 
 const route = useRoute();
-const isAuth = ref(false);
+const authStore = useAuthStore();
+const address = ref("");
+const selectedIds = ref({});
+const selectedIdKeys = computed(() =>
+  Object.entries(selectedIds.value)
+    .filter(([, value]) => value)
+    .map(([key]) => Number(key))
+);
+const isOrderValid = computed(() =>
+  Boolean(selectedIdKeys.value.length && address.value)
+);
+const invalidate = invalidateOrders();
 const {
   data: restaurant,
   error,
@@ -15,11 +29,45 @@ const {
 } = useQuery(["restaurants", route.params.id], () =>
   restaurantsResource.getOne(route.params.id)
 );
+const { mutate } = useMutation(({ address, productsIds, restaurantId }) =>
+  ordersResource.makeOrder({
+    address,
+    productsIds,
+    restaurantId,
+  })
+);
+
+const fullPrice = computed(() =>
+  (restaurant.value?.products || [])
+    .filter((p) => selectedIdKeys.value.includes(p.id))
+    .map((p) => p.price)
+    .reduce((a, b) => a + b, 0)
+);
+
+const handleMakeOrderClick = async () => {
+  if (!isOrderValid.value) {
+    return;
+  }
+  await mutate(
+    {
+      address: address.value,
+      productsIds: selectedIdKeys.value,
+      restaurantId: Number(route.params.id),
+    },
+    {
+      onSuccess: () => {
+        invalidate();
+        selectedIds.value = {};
+      },
+    }
+  );
+};
 
 watch(
   () => route.params.id,
   () => {
     refetch.value();
+    selectedIds.value = {};
   }
 );
 </script>
@@ -38,21 +86,25 @@ watch(
         :key="product.id"
       >
         <label class="checkbox"
-          ><input type="checkbox" /> {{ product.name }} |
-          {{ product.price }}zł</label
+          ><input type="checkbox" v-model="selectedIds[product.id]" />
+          {{ product.name }} | {{ product.price }}zł</label
         >
       </div>
     </article>
-    <template v-if="isAuth">
+    <template v-if="authStore.isAuth">
       <div class="box">
         <label>
           <span>Delivery address: </span>
-          <textarea class="textarea"></textarea>
+          <textarea class="textarea" v-model="address"></textarea>
         </label>
       </div>
       <div class="is-flex is-justify-content-end">
-        <button class="button is-link is-light" style="opacity: 0.5">
-          🛵 Order selected (0.00 zł)
+        <button
+          class="button is-link is-light"
+          :style="{ opacity: isOrderValid ? 1 : 0.5 }"
+          @click="handleMakeOrderClick"
+        >
+          🛵 Order selected ({{ fullPrice }} zł)
         </button>
       </div>
     </template>

@@ -1,28 +1,26 @@
 <script setup>
 import NotificationBox from "@/components/NotificationBox.vue";
-import { authResource } from "@/resources/auth.resource";
-import { computed, ref } from "vue";
-import { useMutation } from "vue-query";
+import { invalidateOrders } from "@/queries/useOrdersQuery";
+import { useAuthStore } from "@/stores/auth";
+import { computed, reactive } from "vue";
 import { useRouter } from "vue-router";
 
-const email = ref("");
-const password = ref("");
+const credentials = reactive({ email: "", password: "" });
 const router = useRouter();
-
-const isValid = computed(() => Boolean(email.value && password.value));
-const {
-  mutate: signIn,
-  isLoading: isSigningIn,
-  error: signInError,
-} = useMutation(({ email, password }) => authResource.signIn(email, password), {
-  onSuccess: () => router.push("/"),
-});
+const invalidate = invalidateOrders();
+const isValid = computed(() =>
+  Boolean(credentials.email && credentials.password)
+);
+const authStore = useAuthStore();
 
 async function handleSubmit() {
   if (!isValid.value) {
     return;
   }
-  await signIn({ email: email.value, password: password.value });
+  await authStore.signIn(credentials, {
+    onSuccess: () => router.push("/"),
+    onSettled: () => invalidate(),
+  });
 }
 </script>
 
@@ -37,7 +35,7 @@ async function handleSubmit() {
             name="email"
             class="input"
             type="email"
-            v-model="email"
+            v-model="credentials.email"
             placeholder="Your e-mail"
           />
         </div>
@@ -49,22 +47,26 @@ async function handleSubmit() {
             name="password"
             class="input"
             type="password"
-            v-model="password"
+            v-model="credentials.password"
             placeholder="Your password"
           />
         </div>
       </div>
       <div class="field">
         <div class="control">
-          <button :disabled="isSigningIn" class="button is-link" type="submit">
+          <button
+            :disabled="authStore.isSigningIn"
+            class="button is-link"
+            type="submit"
+          >
             Sign in
           </button>
         </div>
       </div>
-      <NotificationBox v-if="isSigningIn" message="Loading..." />
+      <NotificationBox v-if="authStore.isSigningIn" message="Loading..." />
       <NotificationBox
-        v-if="signInError"
-        :message="signInError.message"
+        v-if="authStore.signInError"
+        :message="authStore.signInError.message"
         type="danger"
       />
     </form>

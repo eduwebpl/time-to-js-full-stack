@@ -13,8 +13,10 @@ const {
   error,
   isLoading,
   refetch,
-} = useQuery(["orders", route.params.id], () =>
-  ordersResource.getOne(route.params.id)
+} = useQuery(
+  ["orders", route.params.id],
+  () => ordersResource.getOne(route.params.id),
+  { retry: false }
 );
 
 const deliveryDate = computed(() =>
@@ -40,8 +42,8 @@ watch(
 
 <template>
   <NotificationBox v-if="isLoading" message="Loading restaurant..." />
-  <NotificationBox v-if="error" :message="error.message" type="danger" />
-  <section v-if="order">
+  <NotificationBox v-else-if="error" :message="error.message" type="danger" />
+  <section v-else-if="order">
     <h3 class="is-size-3 my-3">Order from: {{ formatDate(order.date) }}</h3>
     <div class="box">Restaurant: {{ order?.restaurant?.name }}</div>
     <div class="box">

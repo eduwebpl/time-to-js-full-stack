@@ -1,5 +1,5 @@
 import { ordersResource } from "@/resources/orders.resource";
-import { useQuery } from "vue-query";
+import { useQuery, useQueryClient } from "vue-query";
 
 const QUERY_KEY = "orders";
 
@@ -11,4 +11,9 @@ export function useOrdersQuery() {
   } = useQuery([QUERY_KEY], ordersResource.getAll);
 
   return { isOrdersLoading, ordersError, orders };
+}
+
+export function invalidateOrders() {
+  const queryClient = useQueryClient();
+  return () => queryClient.invalidateQueries([QUERY_KEY]);
 }
