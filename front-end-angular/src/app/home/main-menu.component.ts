@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Order } from '../restaurant/order'
+import { Restaurant } from '../restaurant/restaurant'
 
 @Component({
   selector: 'app-main-menu',
@@ -23,12 +25,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainMenuComponent implements OnInit {
 
-  restaurants = [
-    {id: 1, name: 'Sea food restaurant'},
-    {id: 2, name: 'Sooo Fast'}
+  restaurants: Restaurant[] = [
+    {id: 1, name: 'sample', address: '', type: '', products: []}
   ]
 
-  orders = [
+  orders: Order[] = [
     {id: 1, date: '01/09'},
     {id: 2, date: '14/09'}
   ]
