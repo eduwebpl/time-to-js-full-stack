@@ -5,7 +5,13 @@
   "projects": {
     "front-end-angular": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "inlineStyle": true,
+          "skipTests": true,
+          "inlineTemplate": true
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
