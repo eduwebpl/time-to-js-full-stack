@@ -1,0 +1,30 @@
+
+<main class="container">
+  <section class="hero is-danger has-text-white mb-4">
+    <div class="hero-body">
+      <p class="title has-text-white">Food Delivery (Angular)</p>
+      <p class="subtitle is-italic has-text-right">(...) sample front-end Single Page App</p></div>
+  </section>
+  <section class="is-flex is-justify-content-end	"><a class="icon-text" href="sign-in">
+    <div class="box icon">🔑</div>
+  </a></section>
+  <div class="columns">
+    <div class="column is-2">
+      <aside><p class="menu-label">Restaurants</p>
+        <ul class="menu-list">
+          <li><a class="" href="restaurants/1">Sea food restaurant</a></li>
+          <li><a class="" href="restaurants/2">Sooo Fast</a></li>
+        </ul>
+        <p class="menu-label">Orders</p>
+        <ul class="menu-list">
+          <li class="notification is-warning"> Loading failed: Not allowed</li>
+        </ul>
+      </aside>
+    </div>
+    <div class="column">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</main>
+
+
