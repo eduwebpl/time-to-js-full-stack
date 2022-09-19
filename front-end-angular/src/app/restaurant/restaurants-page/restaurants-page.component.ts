@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../auth/auth.service'
 
 @Component({
   template: `
@@ -12,15 +13,17 @@ import { Component, OnInit } from '@angular/core';
         <div class="panel-block"><label class="checkbox"><input type="checkbox"> Volcano Roll |
           22.5zł</label></div>
       </article>
-      <div class="box">
-        <label>
-          <span>Delivery address: </span>
-          <textarea class="textarea"></textarea>
-        </label>
-      </div>
-      <div class="is-flex is-justify-content-end">
-        <button class="button is-link is-light" style="opacity: 0.5;">🛵 Order selected (0.00 zł)</button>
-      </div>
+      <ng-container *ngIf="authService.isAuth$ | async">
+        <div class="box">
+          <label>
+            <span>Delivery address: </span>
+            <textarea class="textarea"></textarea>
+          </label>
+        </div>
+        <div class="is-flex is-justify-content-end">
+          <button class="button is-link is-light" style="opacity: 0.5;">🛵 Order selected (0.00 zł)</button>
+        </div>
+      </ng-container>
     </section>
   `,
   styles: [
@@ -28,7 +31,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RestaurantsPageComponent implements OnInit {
 
-  constructor() { }
+  constructor(public authService :AuthService) { }
 
   ngOnInit(): void {
   }

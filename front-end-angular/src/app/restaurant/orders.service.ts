@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core';
+import { retry } from 'rxjs/operators'
 import { environment } from '../../environments/environment'
 import { Order } from './order'
 
@@ -13,7 +14,7 @@ export class OrdersService {
   constructor(private httpClient: HttpClient) { }
 
   getAll() {
-    return this.httpClient.get<Order[]>(this.baseURL)
+    return this.httpClient.get<Order[]>(this.baseURL).pipe(retry(3))
   }
 
   getOne(id: number | string) {
