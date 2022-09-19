@@ -20,4 +20,8 @@ export class OrdersService {
   getOne(id: number | string) {
     return this.httpClient.get<Order>(this.baseURL + '/' + id)
   }
+
+  makeOrder({ restaurantId, productsIds, address }: { restaurantId: number, productsIds: number[], address: string }) {
+    return this.httpClient.post<Order>(this.baseURL, { restaurantId, productsIds, address })
+  }
 }

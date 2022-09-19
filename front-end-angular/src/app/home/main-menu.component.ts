@@ -14,7 +14,7 @@ import { RestaurantsService } from '../restaurant/restaurants.service'
       <p class="menu-label">Restaurants</p>
       <ul class="menu-list">
         <li *ngFor="let restaurant of restaurants">
-          <a [routerLink]="'/restaurants/' + restaurant.id">{{restaurant.name}}</a>
+          <a [routerLink]="'/restaurants/' + restaurant.id" routerLinkActive="is-active">{{restaurant.name}}</a>
         </li>
       </ul>
       <ng-container *ngIf="authService.isAuth$ | async">
@@ -27,7 +27,7 @@ import { RestaurantsService } from '../restaurant/restaurants.service'
             <app-notification [message]="ordersErrorMessage" type="danger"></app-notification>
           </li>
           <li *ngFor="let order of orders">
-            <a [routerLink]="'/orders/' + order.id">{{order.date | date:"dd/MM HH:mm"}}</a>
+            <a [routerLink]="'/orders/' + order.id" routerLinkActive="is-active">{{order.date | date:"dd/MM HH:mm"}}</a>
           </li>
         </ul>
       </ng-container>

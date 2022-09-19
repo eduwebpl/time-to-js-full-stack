@@ -1,20 +1,24 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router'
+import { switchMap } from 'rxjs/operators'
+import { Order } from '../order'
+import { OrdersService } from '../orders.service'
 
 @Component({
   template: `
-    <section>
-      <h3 class="is-size-3 my-3">Order from: 28/08 08:22:26</h3>
-      <div class="box">Restaurant: Sooo Fast restaurant</div>
+    <section *ngIf="order">
+      <h3 class="is-size-3 my-3">Order from: {{order.date | date:"dd/MM HH:mm"}}</h3>
+      <div class="box">Restaurant: {{order.restaurant.name}}</div>
       <div class="box">Products:
         <ul>
-          <li> 12.5 PLN</li>
-          <li> 79.2 PLN</li>
+          <li *ngFor="let product of order.products"> {{product.price}} PLN</li>
         </ul>
       </div>
-      <div class="box" style="background-color: rgb(241, 70, 104);">Delivery status:
-        <div>CANCELED
+      <div class="box" [ngStyle]="statusStyle">Delivery status:
+        <div>
+          {{order.delivery?.status}} {{order.delivery?.deliveryDate | date:"dd/MM HH:mm"}}
           <hr>
-          My super street
+          {{order.delivery?.address}}
         </div>
       </div>
     </section>
@@ -24,9 +28,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OrdersPageComponent implements OnInit {
 
-  constructor() { }
+  order?: Order
+
+  constructor(private ordersService :OrdersService,  private activatedRoute :ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.activatedRoute.params
+      .pipe(switchMap((params: Params) => this.ordersService.getOne(params['id'])))
+      .subscribe(newOrder => {
+        this.order = newOrder
+      })
   }
 
+  get statusStyle() {
+    const backgroundColor = {
+          IN_PROGRESS: "#e8d592",
+          DELIVERED: "rgba(3,175,175,0.16)",
+          CANCELED: "#ce3e3e",
+        }[this.order?.delivery?.status || 'IN_PROGRESS']
+    return { backgroundColor }
+  }
 }

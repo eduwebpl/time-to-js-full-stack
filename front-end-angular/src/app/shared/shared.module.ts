@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms'
 import { NotificationComponent } from './notification.component';
 
 
@@ -9,10 +10,12 @@ import { NotificationComponent } from './notification.component';
     NotificationComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   exports: [
-    NotificationComponent
+    NotificationComponent,
+    FormsModule
   ]
 })
 export class SharedModule { }

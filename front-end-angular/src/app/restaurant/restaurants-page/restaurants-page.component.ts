@@ -1,27 +1,35 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router'
+import { switchMap, tap } from 'rxjs/operators'
 import { AuthService } from '../../auth/auth.service'
+import { OrdersService } from '../orders.service'
+import { Restaurant } from '../restaurant'
+import { RestaurantsService } from '../restaurants.service'
 
 @Component({
   template: `
-    <section>
-      <h3 class="is-size-3 my-3">Sea food restaurant</h3>
-      <div class="box">sushi-street 23, 90023 Hutomaki</div>
+    <section *ngIf="restaurant">
+      <h3 class="is-size-3 my-3">{{restaurant.name}}</h3>
+      <div class="box">{{restaurant.address}}</div>
       <article class="panel is-info"><p class="panel-heading">Delivery menu</p>
-        <div class="panel-block"><label class="checkbox"><input type="checkbox"> Maki | 89.2zł</label></div>
-        <div class="panel-block"><label class="checkbox"><input type="checkbox"> Philadelphia Roll |
-          122zł</label></div>
-        <div class="panel-block"><label class="checkbox"><input type="checkbox"> Volcano Roll |
-          22.5zł</label></div>
+        <div class="panel-block" *ngFor="let product of restaurant.products">
+          <label class="checkbox">
+            <input type="checkbox" [(ngModel)]="selectedIds[product.id]" > {{product.name}} | {{product.price}}zł
+          </label>
+        </div>
       </article>
       <ng-container *ngIf="authService.isAuth$ | async">
         <div class="box">
           <label>
             <span>Delivery address: </span>
-            <textarea class="textarea"></textarea>
+            <textarea class="textarea" [(ngModel)]="address"></textarea>
           </label>
         </div>
         <div class="is-flex is-justify-content-end">
-          <button class="button is-link is-light" style="opacity: 0.5;">🛵 Order selected (0.00 zł)</button>
+          <button
+                class="button is-link is-light"
+                (click)="handleMakeOrderClick()"
+                  [ngStyle]="{opacity: isOrderValid ? 1 : 0.5}">🛵 Order selected ({{fullPrice}} zł)</button>
         </div>
       </ng-container>
     </section>
@@ -31,9 +39,53 @@ import { AuthService } from '../../auth/auth.service'
 })
 export class RestaurantsPageComponent implements OnInit {
 
-  constructor(public authService :AuthService) { }
+  restaurantId = 0
+  address = ''
+  selectedIds: { [key: number] : boolean} = {}
+  restaurant?: Restaurant
+
+  constructor(public authService :AuthService, private activatedRoute :ActivatedRoute, private restaurantsService :RestaurantsService, private ordersService :OrdersService) { }
 
   ngOnInit(): void {
+    this.activatedRoute.params
+      .pipe(
+        tap((params: Params) => {
+          this.restaurantId = Number(params['id'])
+          this.selectedIds = {}
+        }),
+        switchMap((params: Params) => this.restaurantsService.getOne(params['id'])))
+      .subscribe(newRestaurant => {
+       this.restaurant = newRestaurant
+    })
   }
 
+  get selectedIdKeys(): number[] {
+      return  Object.entries(this.selectedIds)
+        .filter(([, value]) => value)
+        .map(([key]) => Number(key))
+  }
+
+  get isOrderValid(): boolean  {
+    return Boolean(this.selectedIdKeys.length && this.address)
+  }
+
+  get fullPrice(): number {
+     return (this.restaurant?.products || [])
+       .filter((p) => this.selectedIdKeys.includes(p.id))
+       .map((p) => p.price)
+       .reduce((a, b) => a + b, 0)
+  }
+
+  handleMakeOrderClick() {
+    if (!this.isOrderValid) {
+      return;
+    }
+    this.ordersService.makeOrder({
+      address: this.address,
+      restaurantId: this.restaurantId,
+      productsIds: this.selectedIdKeys
+    }).subscribe(() => {
+      this.selectedIds = {}
+    })
+  }
 }
