@@ -14,7 +14,7 @@ export class OrdersService {
   constructor(private httpClient: HttpClient) { }
 
   getAll() {
-    return this.httpClient.get<Order[]>(this.baseURL).pipe(retry(3))
+    return this.httpClient.get<Order[]>(this.baseURL).pipe(retry({count: 3, delay: 2000}))
   }
 
   getOne(id: number | string) {
