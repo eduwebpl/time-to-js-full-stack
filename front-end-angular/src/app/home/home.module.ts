@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SharedModule } from '../shared/shared.module'
 import { HeaderComponent } from './header/header.component'
 import { HomePageComponent } from './home-page.component'
 
@@ -22,7 +23,8 @@ import { UserNavBarComponent } from './user-nav-bar.component'
   ],
   imports: [
     CommonModule,
-    HomeRoutingModule
+    HomeRoutingModule,
+    SharedModule
   ]
 })
 export class HomeModule { }

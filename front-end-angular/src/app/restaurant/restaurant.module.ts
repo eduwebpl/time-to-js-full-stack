@@ -14,6 +14,7 @@ import { OrdersPageComponent } from './orders-page/orders-page.component';
   imports: [
     CommonModule,
     RestaurantRoutingModule
-  ]
+  ],
+  providers: []
 })
 export class RestaurantModule { }
