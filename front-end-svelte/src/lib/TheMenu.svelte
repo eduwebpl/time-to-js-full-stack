@@ -7,6 +7,8 @@
 
     const restaurantsResult = useQuery(["restaurants"], restaurantsResource.getAll)
     const ordersResult = useOrdersQuery()
+
+    $: ({ isLoading, isError, data, error } = $ordersResult)
 </script>
 
 <aside><p class="menu-label">Restaurants</p>
@@ -30,16 +32,16 @@
     </ul>
     <p class="menu-label">Orders</p>
     <ul class="menu-list">
-        {#if $ordersResult.isLoading }
+        {#if isLoading }
             <li>
                 <Notification message="Loading orders..." />
             </li>
-        {:else if $ordersResult.isError}
+        {:else if isError}
             <li>
-                <Notification error={$ordersResult.error} type="danger" />
+                <Notification error={error} type="danger" />
             </li>
         {:else}
-            {#each $ordersResult.data as {id, date}}
+            {#each data as {id, date}}
                 {@const link = `/orders/${id}`}
                 <li>
                     <a class:is-active={$isActive(link)} href={$url(link)}>{date}</a>

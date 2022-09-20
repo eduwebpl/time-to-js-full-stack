@@ -4,7 +4,7 @@ import { useQuery, useQueryClient } from "@sveltestack/svelte-query";
 const QUERY_KEY = "orders";
 
 export function useOrdersQuery() {
-  return useQuery([QUERY_KEY], ordersResource.getAll);
+  return useQuery([QUERY_KEY], ordersResource.getAll, { retry: false });
 }
 
 export function invalidateOrders() {
