@@ -1,35 +1,50 @@
 <script>
 	import { isActive, url } from '@roxi/routify'
+    import { useQuery } from '@sveltestack/svelte-query';
+    import { useOrdersQuery } from '../queries/useOrdersQuery.js';
+    import { restaurantsResource } from '../resources/restaurants.resource.js';
+    import Notification from './Notification.svelte';
 
-    const restaurants = [
-			{id: 1, name: 'Example'},
-			{id: 2, name: 'Example 2'},
-			{id: 3, name: 'Example 3'},
-    ]
-
-    const orders = [
-        {id: 1, date: '02/09'},
-        {id: 2, date: '04/09'},
-        {id: 3, date: '06/09'}
-    ]
+    const restaurantsResult = useQuery(["restaurants"], restaurantsResource.getAll)
+    const ordersResult = useOrdersQuery()
 </script>
 
 <aside><p class="menu-label">Restaurants</p>
     <ul class="menu-list">
-        {#each restaurants as {id, name}}
-            {@const link = `/restaurants/${id}`}
+        {#if $restaurantsResult.isLoading }
             <li>
-                <a class:is-active={$isActive(link)} href={$url(link)}>{name}</a>
+                <Notification message="Loading restaurants..." />
             </li>
-        {/each}
+        {:else if $restaurantsResult.isError}
+            <li>
+                <Notification message={$restaurantsResult.error.message} type="danger" />
+            </li>
+        {:else}
+            {#each $restaurantsResult.data as {id, name}}
+                {@const link = `/restaurants/${id}`}
+                <li>
+                    <a class:is-active={$isActive(link)} href={$url(link)}>{name}</a>
+                </li>
+            {/each}
+        {/if}
     </ul>
     <p class="menu-label">Orders</p>
     <ul class="menu-list">
-        {#each orders as {id, date}}
-            {@const link = `/orders/${id}`}
+        {#if $ordersResult.isLoading }
             <li>
-                <a class:is-active={$isActive(link)} href={$url(link)}>{date}</a>
+                <Notification message="Loading orders..." />
             </li>
-        {/each}
+        {:else if $ordersResult.isError}
+            <li>
+                <Notification error={$ordersResult.error} type="danger" />
+            </li>
+        {:else}
+            {#each $ordersResult.data as {id, date}}
+                {@const link = `/orders/${id}`}
+                <li>
+                    <a class:is-active={$isActive(link)} href={$url(link)}>{date}</a>
+                </li>
+            {/each}
+        {/if}
     </ul>
 </aside>
