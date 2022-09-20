@@ -1,6 +1,7 @@
 <script>
 	import { isActive, url } from '@roxi/routify'
     import { useQuery } from '@sveltestack/svelte-query';
+		import { formatDate } from '../date.helper.js';
     import { useOrdersQuery } from '../queries/useOrdersQuery.js';
     import { restaurantsResource } from '../resources/restaurants.resource.js';
     import Notification from './Notification.svelte';
@@ -44,7 +45,7 @@
             {#each data as {id, date}}
                 {@const link = `/orders/${id}`}
                 <li>
-                    <a class:is-active={$isActive(link)} href={$url(link)}>{date}</a>
+                    <a class:is-active={$isActive(link)} href={$url(link)}>{formatDate(date)}</a>
                 </li>
             {/each}
         {/if}
